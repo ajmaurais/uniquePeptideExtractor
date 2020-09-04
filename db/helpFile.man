@@ -1,0 +1,28 @@
+.TH "uniquePeptideExtractor v2.0" 1 "31 Aug 2017" "uniquePeptideExtractor"
+.SH NAME
+uniquePeptideExtractor - extract unique peptides from a DTAFilter-file.
+.SH SYNOPSIS
+\fBuniqueSC \fR[\fIOPTION\fR] \fIDTAFilter-file\fR
+.SH DESCRIPTION 
+uniquePeptideExtractor reads in a DTASelect-filter file and removes all peptides which are not unique to a single locus and proteins which do not have at least one unique peptide.  The shortened filter file is written to a new filter file called \fIINPUT_FILE_NAME\fR_unique.txt in the current working directory. Options are available to rewrite the DTAFilter-file.  \fIDTAFilter-file\fR can be given as a glob and/or relative file reference.
+.SH OPTIONS
+.TP
+Command line options are processed from left to right. Options can be specified more than once. If conflicting options are specified, later specifications override earlier ones.
+.TP
+\fB-f\fP
+Warnings for errors in reading DTAfilter files are printed to the terminal, but the program will continue execution until all input files are processed.  By default the program will exit during runtime if there is an error reading files.
+.TP
+\fB-rw\fP
+Rewrite DTAFilter-files.  By default, a new file will be generated with the name \fIINPUT_FILE_NAME\fP_unique.txt.
+.TP
+\fB-h, --help\fR
+Display this help file.
+.SH EXAMPLES
+.TP
+\fBuniqueSC\fR \fI<file>\fR
+Run uniquePeptideExtractor using default parameters.
+.TP
+\fBuniqueSC -rw\fR \fI<file>\fR
+Rewrite current DTASelect-filter with a filter file containing only unique peptides.
+.SH AUTHOR
+uniquePeptideExtractor was written by Aaron Maurais. Email questions or bugs to: aaron.maurais@.bc.edu
