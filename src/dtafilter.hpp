@@ -10,7 +10,7 @@
 #include <vector>
 #include <fstream>
 #include <cassert>
-#include <stdlib.h>
+#include <cstdlib>
 #include <string>
 #include <sys/stat.h>
 #include <sstream>
@@ -20,13 +20,10 @@
 
 using namespace std;
 
-//this string is used to determine if a DTAFilter file is valid. If the DTASelect verion is
-//different the string can be changed, but compatability with this program is not guaranteed.
+//this string is used to determine if a DTAFilter file is valid. If the DTASelect version is
+//different the string can be changed, but compatibility with this program is not guaranteed.
 string const DTAFILTER_HEADER_LINE = "DTASelect v2.0.39";
 
-string const COLUMN_HEADER_LINE_ELEMENTS[] = {"Unique", "FileName", "XCorr", "DeltCN", "Conf%", "M+H+",
-	"CalcM+H+", "TotalIntensity", "SpR", "ZScore", "IonProportion", "Redundancy", "Sequence"};
-int const COLUMN_HEADER_LINE_ELEMENTS_LENGTH = 13;
 char const DELIM = '\t';
 
 /******** class definitions and member functions *******/
@@ -81,7 +78,7 @@ public:
 /****** functions ******/
 
 /* dtafilter.cpp */
-bool isColumnHeaderLine(const vector<string>&);
+bool isColumnHeaderLine(const std::string&);
 int parsePeptideSC(string);
 
 

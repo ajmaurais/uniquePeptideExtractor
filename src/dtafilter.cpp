@@ -28,14 +28,15 @@ void Protein::clear()
 //parse proten header line and extract desired data
 bool Protein::initialize(string line)
 {
-	clear();
+    clear();
+
+    //tell readIn function to skip line if it is header line
+    if(isColumnHeaderLine(line))
+        return false;
+
 	//split line by tabs
 	vector<string> elems;
 	utils::split(line, '\t', elems);
-	
-	//tell readIn function to skip line if it is header line
-	if(isColumnHeaderLine(elems))
-		return false;
 	
 	//extract protein information
 	locus = elems[0];
@@ -118,6 +119,7 @@ bool DTAfilter::readIn(string fname)
 		getNewLine = true;
 		if(line == DTAFILTER_HEADER_LINE)
 			headerLineFound = true;
+
 		if(utils::strContains('%', line))
 		{
 			if(!headerLineFound)
@@ -125,6 +127,7 @@ bool DTAfilter::readIn(string fname)
 				cout << endl << utils::baseName(fname) << " is not a valid DTAfilter file!" << endl;
 				return false;
 			}
+
 			newProtein.clear();
 			if(newProtein.initialize(line))
 			{
@@ -160,13 +163,11 @@ bool DTAfilter::writeOut(string fname) const
 }
 
 //check if line containing % is a collumn header line instead of a protein header line
-bool isColumnHeaderLine(const vector<string>& elems)
+bool isColumnHeaderLine(const std::string& line)
 {
-	for (int i = 0; i < COLUMN_HEADER_LINE_ELEMENTS_LENGTH; i++)
-		if(COLUMN_HEADER_LINE_ELEMENTS[i] != elems[i])
-			return false;
-	
-	return true;
+    if(utils::strContains("Conf%", line))
+        return true;
+	return false;
 }
 
 //return number of spectral counts for a peptide from a line in DTA filter file
