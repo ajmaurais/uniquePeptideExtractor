@@ -72,23 +72,23 @@ namespace utils{
 		//modifers
 		bool read(string);
 		bool read();
-		inline string getLine();
-		inline string getLine_skip();
-		inline string getLine_trim();
-		inline string getLine_skip_trim();
-		inline string getLine_trim_skip();
+		string getLine();
+		string getLine_skip();
+		string getLine_trim();
+		string getLine_skip_trim();
+		string getLine_trim_skip();
 		
 		//properties
-		inline bool end(){
+		bool end(){
 			return (ss.tellg() >= slen);
 		}
-		inline string getFname() const{
+		string getFname() const{
 			return fname;
 		}
-		inline char getDelim() const{
+		char getDelim() const{
 			return delim;
 		}
-		inline newline_type getNewLineType() const{
+		newline_type getNewLineType() const{
 			return delimType;
 		}
 	};
@@ -98,9 +98,9 @@ namespace utils{
 	/*************/
 	
 	//file utils
-	inline char getDelim(newline_type);
-	inline newline_type detectLineEnding_killStream(ifstream&);
-	inline newline_type detectLineEnding(ifstream&);
+	char getDelim(newline_type);
+	newline_type detectLineEnding_killStream(ifstream&);
+	newline_type detectLineEnding(ifstream&);
 	bool dirExists(const char*);
 	bool dirExists(string);
 	bool fileExists(const char*);
@@ -113,33 +113,61 @@ namespace utils{
 	bool mkdir(string);
 	bool mkdir(const char*);
 	void systemCommand(string command);
-	template<class _Tp> _Tp baseName(const _Tp& path, const _Tp& delims = "/\\");
-	template<class _Tp> _Tp removeExtension(const _Tp&);
-	template<class _Tp> _Tp getExtension(const _Tp&);
-	
+
+    template<class _Tp>
+    _Tp baseName(const _Tp& path, const _Tp& delims = "/\\")
+    {
+        return path.substr(path.find_last_of(delims) + 1);
+    }
+    template<class _Tp>
+    _Tp removeExtension(const _Tp& filename)
+    {
+        typename _Tp::size_type const p(filename.find_last_of('.'));
+        return p > 0 && p != _Tp::npos ? filename.substr(0, p) : filename;
+    }
+    template<class _Tp>
+    _Tp getExtension(const _Tp& filename)
+    {
+        typename _Tp::size_type const p(filename.find_last_of('.'));
+        return p > 0 && p != _Tp::npos ? filename.substr(p) : filename;
+    }
+
 	//type conversions
-	template <typename _Tp> inline string toString(_Tp);
-	inline int toInt(string);
-	inline double toDouble(string);
+
+    //converts num to string because to_string does not work with stl 98
+    template <typename _Tp>
+    string toString(_Tp num)
+    {
+        string str;
+        stringstream convert;
+
+        convert << num;
+        convert >> str;
+
+        return str;
+    }
+
+    int toInt(string);
+	double toDouble(string);
 	bool isInteger(string);
 	
 	//string utils
-	inline bool strContains(string, string);
-	inline bool strContains(char, string);
-	inline bool startsWith(string whithinStr, string findStr);
-	inline bool endsWith(string whithinStr, string findStr);
-	inline void split (const string&, const char, vector<string>&);
-	inline string trimTraling(const string&);
-	inline string trimLeading(const string&);
-	inline string trim(const string&);
+	bool strContains(string, string);
+	bool strContains(char, string);
+	bool startsWith(string whithinStr, string findStr);
+	bool endsWith(string whithinStr, string findStr);
+	void split (const string&, const char, vector<string>&);
+	string trimTraling(const string&);
+	string trimLeading(const string&);
+	string trim(const string&);
 	bool isCommentLine(string);
-	inline string removeSubstr(string, string);
-	inline string removeChars(char, string);
+	string removeSubstr(string, string);
+	string removeChars(char, string);
 	string toLower(string);
 	string repeat(string, size_t);
-	inline void getLineTrim(istream& is, string& line,
+	void getLineTrim(istream& is, string& line,
 							char delim = DEFAULT_LINE_DELIM, size_t beginLine = DEFAULT_BEGIN_LINE);
-	inline void getLine(istream& is, string& line,
+	void getLine(istream& is, string& line,
 						char delim = DEFAULT_LINE_DELIM, size_t beginLine = DEFAULT_BEGIN_LINE);
 	
 	//other

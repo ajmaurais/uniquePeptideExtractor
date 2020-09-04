@@ -53,14 +53,14 @@ namespace utils{
 		}
 	}
 	
-	inline string File::getLine()
+	string File::getLine()
 	{
 		string ret;
 		utils::getLine(ss, ret, delim, beginLine);
 		return ret;
 	}
 	
-	inline string File::getLine_skip()
+	string File::getLine_skip()
 	{
 		string ret;
 		do{
@@ -69,14 +69,14 @@ namespace utils{
 		return ret;
 	}
 	
-	inline string File::getLine_trim()
+	string File::getLine_trim()
 	{
 		string ret;
 		utils::getLineTrim(ss, ret, delim, beginLine);
 		return ret;
 	}
 	
-	inline string File::getLine_skip_trim()
+	string File::getLine_skip_trim()
 	{
 		string ret;
 		do{
@@ -85,7 +85,7 @@ namespace utils{
 		return ret;
 	}
 	
-	inline string File::getLine_trim_skip()
+	string File::getLine_trim_skip()
 	{
 		return getLine_skip_trim();
 	}
@@ -96,7 +96,7 @@ namespace utils{
 	/*  file utilities */
 	/*******************/
 	
-	inline newline_type detectLineEnding_killStream(ifstream& inF) {
+	newline_type detectLineEnding_killStream(ifstream& inF) {
 		char tmp;
 		while(inF){
 			inF.get(tmp);
@@ -112,7 +112,7 @@ namespace utils{
 		return unknown;
 	}
 	
-	inline newline_type detectLineEnding(ifstream& inF)
+	newline_type detectLineEnding(ifstream& inF)
 	{
 		if(!inF)
 			throw runtime_error("Bad file stream!");
@@ -122,7 +122,7 @@ namespace utils{
 		return ret;
 	}
 	
-	inline char getDelim(newline_type type)
+	char getDelim(newline_type type)
 	{
 		switch(type){
 			case lf : return '\n';
@@ -253,44 +253,13 @@ namespace utils{
 		return dirExists(rpath);
 	}
 	
-	template<class _Tp>
-	_Tp baseName(const _Tp& path, const _Tp& delims)
-	{
-		return path.substr(path.find_last_of(delims) + 1);
-	}
-	template<class _Tp>
-	_Tp removeExtension(const _Tp& filename)
-	{
-		typename _Tp::size_type const p(filename.find_last_of('.'));
-		return p > 0 && p != _Tp::npos ? filename.substr(0, p) : filename;
-	}
-	template<class _Tp>
-	_Tp getExtension(const _Tp& filename)
-	{
-		typename _Tp::size_type const p(filename.find_last_of('.'));
-		return p > 0 && p != _Tp::npos ? filename.substr(p) : filename;
-	}
-	
 	/*********************/
 	/*  type conversions */
 	/*********************/
 	
-	//converts num to string because to_string does not work with stl 98
-	template <typename _Tp>
-	inline string toString(_Tp num)
-	{
-		string str;
-		stringstream convert;
-		
-		convert << num;
-		convert >> str;
-		
-		return str;
-	}
-	
 	//converts string to int because atoi does not work with stl 98
 	//Pre: str must be a string with a valid interger conversion
-	inline int toInt(string str)
+	int toInt(string str)
 	{
 		assert(isInteger(str));
 		
@@ -346,23 +315,23 @@ namespace utils{
 	/*****************/
 	
 	//returns true if findTxt is found in whithinTxt and false if it it not
-	inline bool strContains(string findTxt, string whithinTxt)
+	bool strContains(string findTxt, string whithinTxt)
 	{
 		return whithinTxt.find(findTxt) != string::npos;
 	}
 	
 	//overloaded version of strContains, handels findTxt as char
-	inline bool strContains(char findTxt, string whithinTxt)
+	bool strContains(char findTxt, string whithinTxt)
 	{
 		return strContains(string(1, findTxt), whithinTxt);
 	}
 	
-	inline bool startsWith(string whithinStr, string findStr)
+	bool startsWith(string whithinStr, string findStr)
 	{
 		return (whithinStr.find(findStr) == 0);
 	}
 	
-	inline bool endsWith(string whithinStr, string findStr)
+	bool endsWith(string whithinStr, string findStr)
 	{
 		size_t pos = whithinStr.rfind(findStr);
 		if(pos == string::npos)
@@ -372,7 +341,7 @@ namespace utils{
 	}
 	
 	//split str by delim and populate each split into elems
-	inline void split (const string& str, const char delim, vector<string>& elems)
+	void split (const string& str, const char delim, vector<string>& elems)
 	{
 		elems.clear();
 		stringstream ss (str);
@@ -384,7 +353,7 @@ namespace utils{
 	}
 	
 	//remove trailing WHITESPACE
-	inline string trimTraling(const string& str)
+	string trimTraling(const string& str)
 	{
 		if(str.empty())
 			return "";
@@ -392,7 +361,7 @@ namespace utils{
 	}
 	
 	//remove leading WHITESPACE
-	inline string trimLeading(const string& str)
+	string trimLeading(const string& str)
 	{
 		if(str.empty())
 			return "";
@@ -400,7 +369,7 @@ namespace utils{
 	}
 	
 	//remove trailing and leading WHITESPACE
-	inline string trim(const string& str)
+	string trim(const string& str)
 	{
 		if(str.empty())
 			return "";
@@ -415,14 +384,14 @@ namespace utils{
 	}
 	
 	//gets new line from is and removes trailing and leading whitespace
-	inline void getLineTrim(istream& is, string& line, char delim, size_t beginLine)
+	void getLineTrim(istream& is, string& line, char delim, size_t beginLine)
 	{
 		utils::getLine(is, line, delim, beginLine);
 		line = trim(line);
 	}
 	
 	//gets new line from is and handels non zero start to line
-	inline void getLine(istream& is, string& line, char delim, size_t beginLine)
+	void getLine(istream& is, string& line, char delim, size_t beginLine)
 	{
 		getline(is, line, delim);
 		if(beginLine > 0)
@@ -430,7 +399,7 @@ namespace utils{
 	}
 	
 	//removes findStr from whithinStr and returns whithinStr
-	inline string removeSubstr(string findStr, string whithinStr)
+	string removeSubstr(string findStr, string whithinStr)
 	{
 		string::size_type i = whithinStr.find(findStr);
 		
@@ -440,7 +409,7 @@ namespace utils{
 		return whithinStr;
 	}
 	
-	inline string removeChars(char findChar, string wStr)
+	string removeChars(char findChar, string wStr)
 	{
 		wStr.erase(remove(wStr.begin(), wStr.end(), findChar), wStr.end());
 		return wStr;

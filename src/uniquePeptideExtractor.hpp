@@ -21,8 +21,8 @@
 
 #define BIN_VERSION_NUM "2.0"
 
-#include "params.cpp"
-#include "utils.cpp"
-#include "dtafilter.cpp"
+#include "utils.hpp"
+#include "params.hpp"
+#include "dtafilter.hpp"
 
 #endif /* uniquePeptideExtractor_h */
